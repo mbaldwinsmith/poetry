@@ -1,3 +1,3 @@
 # The Golden Thread
-## A Poetic Cycle by Mark Baldwin-Smith
+## A Poetic Cycle by Mark Oriel
 My personal collection of hand written poems.
