@@ -198,10 +198,10 @@ function ReaderPanel({ poem, onClose, onPrev, onNext, fading }) {
           </div>
           <div className="reader-eyebrow">From the garden</div>
           <h1 className="reader-title">{poem.title}</h1>
-          <div className="reader-rule" />
           {poem.epigraph && (
             <p className="reader-epigraph">{poem.epigraph}</p>
           )}
+          <div className="reader-rule" />
           <pre className="reader-body">{poem.body}</pre>
           <div className="reader-nav">
             <button onClick={onPrev}>← along the thread</button>
