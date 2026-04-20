@@ -151,11 +151,23 @@ function PoemNode({ poem, cx, cy, active, visible, onClick, index }) {
       >
         {String(index + 1).padStart(2, "0")}
       </text>
+      <text
+        className="node-hint"
+        x={size/2} y={size/2 + size * 0.36}
+        textAnchor="middle"
+        fontFamily="'EB Garamond', serif"
+        fontSize={13}
+        fontStyle="italic"
+        fill="#b8892b"
+        style={{ pointerEvents: "none", letterSpacing: "0.2em" }}
+      >
+        read
+      </text>
     </g>
   )
 }
 
-function ReaderPanel({ poem, onClose, onPrev, onNext }) {
+function ReaderPanel({ poem, onClose, onPrev, onNext, fading }) {
   const ref = useRef(null)
   useEffect(() => {
     if (ref.current) ref.current.scrollTop = 0
@@ -168,7 +180,6 @@ function ReaderPanel({ poem, onClose, onPrev, onNext }) {
     return () => window.removeEventListener("keydown", onKey)
   }, [poem, onClose, onPrev, onNext])
 
-
   if (!poem) return null
 
   return (
@@ -177,7 +188,7 @@ function ReaderPanel({ poem, onClose, onPrev, onNext }) {
         style={{ "--wash": poem.palette.wash, "--ink": poem.palette.ink }}>
         <button className="reader-close" onClick={onClose} aria-label="Close">×</button>
         <div className="reader-wash" />
-        <div className="reader-inner">
+        <div className={`reader-inner${fading ? ' reader-fading' : ''}`}>
           <div className="reader-motif">
             {poem.image ? (
               <img src={BASE + poem.image} alt="" style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover", boxShadow: "0 2px 18px rgba(60,40,10,0.18)" }} />
@@ -188,6 +199,9 @@ function ReaderPanel({ poem, onClose, onPrev, onNext }) {
           <div className="reader-eyebrow">From the garden</div>
           <h1 className="reader-title">{poem.title}</h1>
           <div className="reader-rule" />
+          {poem.epigraph && (
+            <p className="reader-epigraph">{poem.epigraph}</p>
+          )}
           <pre className="reader-body">{poem.body}</pre>
           <div className="reader-nav">
             <button onClick={onPrev}>← along the thread</button>
@@ -257,10 +271,19 @@ export default function Garden() {
     return () => { document.body.style.overflow = '' }
   }, [activeId])
 
+  const [fading, setFading] = useState(false)
   const activePoem = poems.find(p => p.id === activeId)
   const activeIdx = poems.findIndex(p => p.id === activeId)
-  const goPrev = () => setActiveId(poems[(activeIdx - 1 + poems.length) % poems.length].id)
-  const goNext = () => setActiveId(poems[(activeIdx + 1) % poems.length].id)
+
+  const navigate = (newId) => {
+    setFading(true)
+    setTimeout(() => {
+      setActiveId(newId)
+      setFading(false)
+    }, 180)
+  }
+  const goPrev = () => navigate(poems[(activeIdx - 1 + poems.length) % poems.length].id)
+  const goNext = () => navigate(poems[(activeIdx + 1) % poems.length].id)
 
   let threadHead = null
   if (pathRef.current && pathLen > 0 && isFinite(pathLen)) {
@@ -407,6 +430,7 @@ export default function Garden() {
         onClose={() => setActiveId(null)}
         onPrev={goPrev}
         onNext={goNext}
+        fading={fading}
       />
     </>
   )
