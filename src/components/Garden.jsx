@@ -167,7 +167,7 @@ function PoemNode({ poem, cx, cy, active, visible, onClick, index }) {
   )
 }
 
-function ReaderPanel({ poem, onClose, onPrev, onNext, fading }) {
+function ReaderPanel({ poem, onClose, onPrev, onNext, fading, index, total }) {
   const ref = useRef(null)
   useEffect(() => {
     if (ref.current) ref.current.scrollTop = 0
@@ -179,6 +179,12 @@ function ReaderPanel({ poem, onClose, onPrev, onNext, fading }) {
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [poem, onClose, onPrev, onNext])
+
+  useEffect(() => {
+    const prev = document.title
+    if (poem) document.title = `${poem.title} — The Golden Thread`
+    return () => { document.title = prev }
+  }, [poem])
 
   if (!poem) return null
 
@@ -202,9 +208,10 @@ function ReaderPanel({ poem, onClose, onPrev, onNext, fading }) {
             <p className="reader-epigraph">{poem.epigraph}</p>
           )}
           <div className="reader-rule" />
-          <pre className="reader-body">{poem.body}</pre>
+          <div className="reader-body">{poem.body}</div>
           <div className="reader-nav">
             <button onClick={onPrev}>← along the thread</button>
+            <span className="reader-count">{index + 1} / {total}</span>
             <button onClick={onNext}>further along →</button>
           </div>
         </div>
@@ -417,11 +424,16 @@ export default function Garden() {
 
       <section className="coda">
         <div className="coda-inner">
-          <div className="coda-mark">✦</div>
+          <div className="coda-ornament">
+            <span>✦</span><span>✦</span><span>✦</span>
+          </div>
           <div className="coda-text">
             Home, at last,<br/>an exile no more.
           </div>
           <div className="coda-sub">— The Exile</div>
+          <button className="coda-return" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            ↑ return to the beginning
+          </button>
         </div>
       </section>
 
@@ -431,6 +443,8 @@ export default function Garden() {
         onPrev={goPrev}
         onNext={goNext}
         fading={fading}
+        index={activeIdx}
+        total={poems.length}
       />
     </>
   )

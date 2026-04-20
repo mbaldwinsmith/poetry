@@ -118,11 +118,16 @@ body {
 .coda-inner {
   text-align: center;
 }
-.coda-mark {
-  font-size: 28px;
+.coda-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 32px;
   color: var(--gold);
-  margin-bottom: 22px;
-  letter-spacing: 0.5em;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
 }
 .coda-text {
   font-family: 'Cormorant Garamond', serif;
@@ -137,6 +142,25 @@ body {
   font-size: 15px;
   color: var(--ink-soft);
   letter-spacing: 0.1em;
+}
+.coda-return {
+  display: inline-block;
+  margin-top: 40px;
+  background: none;
+  border: 1px solid rgba(184, 137, 43, 0.3);
+  padding: 12px 24px;
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 200ms;
+}
+.coda-return:hover {
+  background: rgba(184, 137, 43, 0.08);
+  color: var(--ink);
+  border-color: var(--gold);
 }
 
 /* Poem node tap/hover hint */
@@ -269,6 +293,7 @@ body {
   text-align: center;
   max-width: 520px;
   font-feature-settings: "liga" 1, "onum" 1;
+  font-variant-numeric: oldstyle-nums;
 }
 .reader-nav {
   margin-top: 44px;
@@ -276,7 +301,16 @@ body {
   border-top: 1px solid rgba(184, 137, 43, 0.25);
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 16px;
+}
+.reader-count {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  white-space: nowrap;
 }
 .reader-nav button {
   background: none;
