@@ -168,10 +168,6 @@ function ReaderPanel({ poem, onClose, onPrev, onNext }) {
     return () => window.removeEventListener("keydown", onKey)
   }, [poem, onClose, onPrev, onNext])
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = '' }
-  }, [])
 
   if (!poem) return null
 
@@ -255,6 +251,11 @@ export default function Garden() {
       window.removeEventListener("resize", onScroll)
     }
   }, [poems])
+
+  useEffect(() => {
+    document.body.style.overflow = activeId ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [activeId])
 
   const activePoem = poems.find(p => p.id === activeId)
   const activeIdx = poems.findIndex(p => p.id === activeId)
