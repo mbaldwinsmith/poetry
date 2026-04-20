@@ -1,6 +1,6 @@
 # The Golden Thread
 
-*A garden of thirteen poems by Mark Oriel.*
+*A garden of thirteen poems by Mark Baldwin-Smith.*
 
 An interactive React site where a scroll-driven golden thread connects thirteen poem nodes across a living canvas. Click any node to read the poem in a full-screen reader panel.
 
