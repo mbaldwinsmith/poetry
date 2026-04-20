@@ -168,6 +168,11 @@ function ReaderPanel({ poem, onClose, onPrev, onNext }) {
     return () => window.removeEventListener("keydown", onKey)
   }, [poem, onClose, onPrev, onNext])
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
   if (!poem) return null
 
   return (
